@@ -1,6 +1,6 @@
 # TroyWingsApp — Premium Registration Page 
 
-Modern, luxury registration UI for .NET 8 MVC (Razor) using Bootstrap 5.3 + Bootstrap Icons + Google Fonts. Includes SEO/OG/JSON-LD placeholders, glassmorphism, responsive layout, and client-side validation only (no backend persistence).
+Modern, luxury registration UI for .NET 8 MVC (Razor) using Bootstrap 5.3 + Bootstrap Icons + Google Fonts. Includes SEO/OG/JSON-LD placeholders, glassmorphism, responsive layout, client + server validation, and MySQL persistence.
 
 ## 🔧 Tech Stack & Tools
 
@@ -11,17 +11,22 @@ Modern, luxury registration UI for .NET 8 MVC (Razor) using Bootstrap 5.3 + Boot
 ![Google Fonts](https://img.shields.io/badge/Google%20Fonts-4285F4?logo=googlefonts&logoColor=white&style=for-the-badge)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=111&style=for-the-badge)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white&style=for-the-badge)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&style=for-the-badge)
+![EF Core](https://img.shields.io/badge/EF%20Core-512BD4?logo=dotnet&logoColor=white&style=for-the-badge)
 
-- Razor views only (no controllers/models changes)
 - Bootstrap 5.3.3 (CDN) + Bootstrap Icons (CDN)
 - Google Fonts (Playfair Display, Inter)
 - Custom CSS/JS under `wwwroot` (gradients, glass cards, animations, focus/hover states)
+- EF Core + Pomelo MySQL provider for persistence
 
 ## 📂 Project Layout
 
 - `TroyWingsApp/Views/Home/Index.cshtml` — Razor view, head meta/SEO, JSON-LD, header brand, footer, left brand card, right registration form, Bootstrap validation hooks.
 - `TroyWingsApp/wwwroot/css/registration.css` — Luxury theme (nav brand, hero cards, gradient background with noise/vignette, responsive grid, date picker/icon tinting, hover/focus states, reduced-motion support).
 - `TroyWingsApp/wwwroot/js/registration.js` — Minimal script to show validation summary and apply Bootstrap `was-validated`.
+- `TroyWingsApp/Models/Registration.cs` — Data model with annotations.
+- `TroyWingsApp/Data/ApplicationDbContext.cs` — EF Core DbContext (MySQL).
+- `TroyWingsApp/Program.cs` — Service registration for MySQL + EnsureCreated.
 
 ## 🧭 UX & Layout Highlights
 
@@ -37,6 +42,7 @@ Modern, luxury registration UI for .NET 8 MVC (Razor) using Bootstrap 5.3 + Boot
 - HTML5 + Bootstrap validation: `required`, `minlength/maxlength`, India phone pattern `^(\\+?91[- ]?)?[6-9]\\d{9}$`.
 - Inline `.invalid-feedback` and top summary alert `#validationSummary`.
 - Helpers and placeholders styled for contrast; date input and picker icon tinted.
+- Server-side validation via data annotations on `Registration` model.
 
 ## 🌐 SEO & Social
 
@@ -50,6 +56,20 @@ From `TroyWingsApp/`:
 - `dotnet run` (or `dotnet watch run` for live reload)
 - Open the printed URL (e.g., `http://localhost:5230/`).
 - macOS HTTPS trust (optional): `dotnet dev-certs https --trust`, then rerun and use HTTPS URL.
+
+### Database setup (MySQL)
+1) Ensure MySQL is running and reachable at `127.0.0.1:3306`.
+2) Create the database (example):
+   ```sql
+   CREATE DATABASE troywings_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+3) Connection string (set in `appsettings*.json`, replace credentials as needed):
+   ```json
+   "ConnectionStrings": {
+     "Default": "Server=127.0.0.1;Port=3306;Database=troywings_db;User=root;Password=Arbab@321123;"
+   }
+   ```
+4) On startup the app will `EnsureCreated()` the schema if it does not exist. For migrations-based flow, add a migration and run `dotnet ef database update` (requires the `dotnet-ef` tool).
 
 ## 🧪 Commands Cheat Sheet
 
@@ -65,7 +85,8 @@ From `TroyWingsApp/`:
 - Palette: tweak CSS variables in `wwwroot/css/registration.css` (`--accent`, `--bg-*`, etc.).
 - Branding: update copy/icons, brand name, and links in `Index.cshtml`.
 - SEO: replace canonical, OG tags, and JSON-LD placeholders with production values.
-- Backend: wire the form to a controller/action for persistence; currently client-only.
+- Backend: adjust or extend the controller/action as needed; persistence is wired to MySQL via EF Core.
+- Secrets: move DB credentials into user secrets or environment variables for production; current settings are for local dev only.
 
 ## 🧩 Accessibility & Responsiveness
 

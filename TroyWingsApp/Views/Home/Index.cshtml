@@ -1,3 +1,4 @@
+@model TroyWingsApp.Models.Registration
 @{
     ViewData["Title"] = "Register | Troywings Technologies";
 }
@@ -120,50 +121,58 @@
                             </div>
                             <i class="bi bi-shield-check text-accent fs-3"></i>
                         </div>
-                        <div id="validationSummary" class="alert alert-danger d-none small" role="alert">
+                        @if (TempData["Success"] is string successMessage)
+                        {
+                            <div class="alert alert-success small" role="alert">@successMessage</div>
+                        }
+                        @if (TempData["Error"] is string errorMessage)
+                        {
+                            <div class="alert alert-danger small" role="alert">@errorMessage</div>
+                        }
+                        <div id="validationSummary" class="alert alert-danger @(ViewData.ModelState.ErrorCount > 0 ? "" : "d-none") small" role="alert" asp-validation-summary="ModelOnly">
                             Please fix the highlighted fields to continue.
                         </div>
-                        <form class="row g-3 needs-validation" novalidate>
+                        <form asp-action="Register" asp-controller="Home" method="post" class="row g-3 needs-validation" novalidate>
                             <div class="col-12">
-                                <label for="inputName" class="form-label">Name</label>
+                                <label asp-for="Name" class="form-label"></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" class="form-control" id="inputName" name="Name" placeholder="Your full name" required minlength="3" maxlength="80" />
-                                    <div class="invalid-feedback">Please enter your name (3-80 characters).</div>
+                                    <input asp-for="Name" type="text" class="form-control" placeholder="Your full name" required minlength="3" maxlength="80" />
+                                    <span asp-validation-for="Name" class="invalid-feedback"></span>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <label for="inputFather" class="form-label">Father's Name</label>
+                                <label asp-for="FatherName" class="form-label"></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-person-heart"></i></span>
-                                    <input type="text" class="form-control" id="inputFather" name="FatherName" placeholder="Father's full name" required minlength="3" maxlength="80" />
-                                    <div class="invalid-feedback">Please enter your father's name (3-80 characters).</div>
+                                    <input asp-for="FatherName" type="text" class="form-control" placeholder="Father's full name" required minlength="3" maxlength="80" />
+                                    <span asp-validation-for="FatherName" class="invalid-feedback"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="inputDob" class="form-label">Date of Birth</label>
+                                <label asp-for="DateOfBirth" class="form-label"></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
-                                    <input type="date" class="form-control" id="inputDob" name="DateOfBirth" required style="color:#ffd166 !important;" />
-                                    <div class="invalid-feedback">Please provide your date of birth.</div>
+                                    <input asp-for="DateOfBirth" type="date" class="form-control" required style="color:#ffffff !important;" />
+                                    <span asp-validation-for="DateOfBirth" class="invalid-feedback"></span>
                                 </div>
                                 <div class="form-text text-muted" style="color:#ffffff !important;">Used to tailor mentoring milestones.</div>
                             </div>
                             <div class="col-md-6">
-                                <label for="inputContact" class="form-label">Contact Number</label>
+                                <label asp-for="ContactNumber" class="form-label"></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-phone"></i></span>
-                                    <input type="tel" class="form-control" id="inputContact" name="ContactNumber" placeholder="+91 98765 43210" required pattern="^(\\+?91[- ]?)?[6-9]\\d{9}$" minlength="10" maxlength="14" />
-                                    <div class="invalid-feedback">Enter a valid India mobile number (e.g., +91 9876543210).</div>
+                                    <input asp-for="ContactNumber" type="tel" class="form-control" placeholder="+91 98765 43210" required pattern="^(\\+?91[- ]?)?[6-9]\\d{9}$" minlength="10" maxlength="14" />
+                                    <span asp-validation-for="ContactNumber" class="invalid-feedback"></span>
                                 </div>
                                 <div class="form-text text-muted" style="color:#ffffff !important;">We verify contact to keep your account secure.</div>
                             </div>
                             <div class="col-12">
-                                <label for="inputAddress" class="form-label">Address</label>
+                                <label asp-for="Address" class="form-label"></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                    <textarea class="form-control" id="inputAddress" name="Address" placeholder="Street, city, state" rows="3" required minlength="10" maxlength="180"></textarea>
-                                    <div class="invalid-feedback">Please provide your address (10-180 characters).</div>
+                                    <textarea asp-for="Address" class="form-control" placeholder="Street, city, state" rows="3" required minlength="10" maxlength="180"></textarea>
+                                    <span asp-validation-for="Address" class="invalid-feedback"></span>
                                 </div>
                             </div>
                             <div class="col-12">
