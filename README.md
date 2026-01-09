@@ -1,4 +1,4 @@
-# TroyWingsApp — Premium Registration Page
+# TroyWingsApp — Registration Page
 
 Modern, luxury registration UI for .NET 8 MVC (Razor) using Bootstrap 5.3 + Bootstrap Icons + Google Fonts. Includes SEO/OG/JSON-LD placeholders, glassmorphism, responsive layout, client + server validation, and MySQL persistence.
 
