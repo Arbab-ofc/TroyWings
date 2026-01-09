@@ -1,4 +1,4 @@
-# TroyWingsApp — Premium Registration Page 
+# TroyWingsApp — Premium Registration Page
 
 Modern, luxury registration UI for .NET 8 MVC (Razor) using Bootstrap 5.3 + Bootstrap Icons + Google Fonts. Includes SEO/OG/JSON-LD placeholders, glassmorphism, responsive layout, client + server validation, and MySQL persistence.
 
@@ -58,12 +58,13 @@ From `TroyWingsApp/`:
 - macOS HTTPS trust (optional): `dotnet dev-certs https --trust`, then rerun and use HTTPS URL.
 
 ### Database setup (MySQL)
+
 1) Ensure MySQL is running and reachable at `127.0.0.1:3306`.
 2) Create the database (example):
    ```sql
    CREATE DATABASE troywings_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ```
-3) Connection string (set in `appsettings*.json`, replace credentials as needed):
+3) Connection string (set in `appsettings*.json`):
    ```json
    "ConnectionStrings": {
      "Default": "Server=127.0.0.1;Port=3306;Database=troywings_db;User=root;Password=Arbab@321123;"
@@ -73,12 +74,12 @@ From `TroyWingsApp/`:
 
 ## 🧪 Commands Cheat Sheet
 
-- Scaffold (done already): `dotnet new mvc -n TroyWingsApp`
-- Restore (if needed): `dotnet restore`
+- Scaffold : `dotnet new mvc -n TroyWingsApp`
+- Restore : `dotnet restore`
 - Build: `dotnet build`
 - Run: `dotnet run`
 - Live reload: `dotnet watch run`
-- Update workloads (if warned): `dotnet workload update`
+- Update workloads : `dotnet workload update`
 
 ## 🎛️ Customization
 
