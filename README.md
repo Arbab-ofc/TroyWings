@@ -1,6 +1,6 @@
-# TroyWingsApp — Registration Page
+# TroyWingsApp — Registration Experience
 
-Modern, luxury registration UI for .NET 8 MVC (Razor) using Bootstrap 5.3 + Bootstrap Icons + Google Fonts. Includes SEO/OG/JSON-LD placeholders, glassmorphism, responsive layout, client + server validation, and MySQL persistence.
+Premium registration UI for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Icons, and Google Fonts. The page ships with SEO/OG/JSON-LD placeholders, glassmorphism styling, responsive layout, client + server validation, and MySQL persistence via `MySqlConnector`.
 
 ## 🔧 Tech Stack & Tools
 
@@ -12,91 +12,115 @@ Modern, luxury registration UI for .NET 8 MVC (Razor) using Bootstrap 5.3 + Boot
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=111&style=for-the-badge)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white&style=for-the-badge)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&style=for-the-badge)
-![EF Core](https://img.shields.io/badge/EF%20Core-512BD4?logo=dotnet&logoColor=white&style=for-the-badge)
+![MySqlConnector](https://img.shields.io/badge/MySqlConnector-0D9D58?logo=mysql&logoColor=white&style=for-the-badge)
 
-- Bootstrap 5.3.3 (CDN) + Bootstrap Icons (CDN)
-- Google Fonts (Playfair Display, Inter)
-- Custom CSS/JS under `wwwroot` (gradients, glass cards, animations, focus/hover states)
-- EF Core + Pomelo MySQL provider for persistence
+- Bootstrap 5.3.3 + Bootstrap Icons via CDN.
+- Google Fonts (Playfair Display, Inter).
+- Custom CSS/JS under `wwwroot` (gradients, glass cards, animations, validation behavior, success alert timeout).
+- MySQL persistence implemented with lightweight `MySqlConnector` repository (no EF Core runtime dependency).
 
 ## 📂 Project Layout
 
-- `TroyWingsApp/Views/Home/Index.cshtml` — Razor view, head meta/SEO, JSON-LD, header brand, footer, left brand card, right registration form, Bootstrap validation hooks.
-- `TroyWingsApp/wwwroot/css/registration.css` — Luxury theme (nav brand, hero cards, gradient background with noise/vignette, responsive grid, date picker/icon tinting, hover/focus states, reduced-motion support).
-- `TroyWingsApp/wwwroot/js/registration.js` — Minimal script to show validation summary and apply Bootstrap `was-validated`.
-- `TroyWingsApp/Models/Registration.cs` — Data model with annotations.
-- `TroyWingsApp/Data/ApplicationDbContext.cs` — EF Core DbContext (MySQL).
-- `TroyWingsApp/Program.cs` — Service registration for MySQL + EnsureCreated.
+- `TroyWingsApp/Views/Home/Index.cshtml` — Main Razor view with SEO/OG/JSON-LD, registration form, and hooks into shared partials and validation UI.
+- `TroyWingsApp/Views/Shared/_RegistrationHeader.cshtml` — Shared header/brand link.
+- `TroyWingsApp/Views/Shared/_RegistrationFooter.cshtml` — Shared footer links and brand block.
+- `TroyWingsApp/Views/Shared/_BrandShowcase.cshtml` — Left-side brand/story card.
+- `TroyWingsApp/wwwroot/css/registration.css` — Luxury theme (gradient/noise/vignette background, glass cards, accent palette, focus/hover states, motion + reduced-motion support).
+- `TroyWingsApp/wwwroot/js/registration.js` — Client-side validation summary toggle, Bootstrap `was-validated`, and 3-second auto-dismiss for success alerts.
+- `TroyWingsApp/Models/Registration.cs` — Form model with validation attributes.
+- `TroyWingsApp/Data/MySqlRegistrationRepository.cs` — Repository using `MySqlConnector` to auto-create DB/table if missing and insert registrations.
+- `TroyWingsApp/Controllers/HomeController.cs` — Receives form posts, validates, and stores via repository.
+- `TroyWingsApp/Program.cs` — Service registration for repository, DB/table bootstrap on startup, routing, middleware.
 
 ## 🧭 UX & Layout Highlights
 
 - Two-card layout: left brand story, right registration form.
-- Premium background: deep navy/charcoal gradient with vignette + subtle noise and glow accents.
-- Cards: rounded, glassy, shadow, hover glow; input focus glow; button hover lift.
-- Animations: fade/slide on load, micro-interactions; honors `prefers-reduced-motion`.
-- Header: simple brand-only link back to home. Footer anchored to bottom via flex.
+- Premium background: deep navy/charcoal gradient with vignette plus subtle noise and glow accents.
+- Cards: rounded, glassy, shadowed; hover lift and glow; accent typography.
+- Animations: fade/slide on load; honors `prefers-reduced-motion`.
+- Header/footer are shared partials for consistency across views.
 
 ## ✅ Form & Validation
 
 - Fields: Name, Father’s Name, Date of Birth, Contact Number, Address (textarea).
 - HTML5 + Bootstrap validation: `required`, `minlength/maxlength`, India phone pattern `^(\\+?91[- ]?)?[6-9]\\d{9}$`.
-- Inline `.invalid-feedback` and top summary alert `#validationSummary`.
-- Helpers and placeholders styled for contrast; date input and picker icon tinted.
-- Server-side validation via data annotations on `Registration` model.
+- Inline `.invalid-feedback` plus top summary alert `#validationSummary`.
+- Success alert auto-hides after 3 seconds; validation summary stays hidden when the form is valid.
+- Server-side validation via data annotations on `Registration`; repository persists on success.
+- Error handling: TempData surfaces success/error banners; invalid submissions redisplay entered data with validation messages.
+- Accessibility touches: descriptive labels, icons are decorative/contextual, reduced-motion support, high-contrast palette.
 
 ## 🌐 SEO & Social
 
 - Head includes: `<title>`, meta description, canonical placeholder, OG tags.
-- JSON-LD `Organization` schema with placeholder URL/logo/address — replace with real values.
+- JSON-LD `Organization` schema with placeholder URL/logo/address — replace with production values.
 
 ## 🚀 Run Locally
 
 From `TroyWingsApp/`:
 
-- `dotnet run` (or `dotnet watch run` for live reload)
+- Restore/build: `dotnet restore` then `dotnet build` (first restore may need network access for NuGet).
+- Run: `dotnet run` (or `dotnet watch run` for live reload).
 - Open the printed URL (e.g., `http://localhost:5230/`).
 - macOS HTTPS trust (optional): `dotnet dev-certs https --trust`, then rerun and use HTTPS URL.
 
 ### Database setup (MySQL)
 
 1) Ensure MySQL is running and reachable at `127.0.0.1:3306`.
-2) Create the database (example):
-   ```sql
-   CREATE DATABASE troywings_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   ```
-3) Connection string (set in `appsettings*.json`):
+2) Connection string lives in `appsettings*.json` (example):
    ```json
    "ConnectionStrings": {
      "Default": "Server=127.0.0.1;Port=3306;Database=troywings_db;User=root;Password=Arbab@321123;"
    }
    ```
-4) On startup the app will `EnsureCreated()` the schema if it does not exist. For migrations-based flow, add a migration and run `dotnet ef database update` (requires the `dotnet-ef` tool).
+3) On startup, `MySqlRegistrationRepository` will:
+   - Create the database if it does not exist.
+   - Create the `Registrations` table if it does not exist.
+4) To seed or extend schema, add your own SQL or migrations toolchain; current flow is minimal and code-first via SQL scripts in the repository.
+5) Table definition created at runtime:
+   ```sql
+   CREATE TABLE IF NOT EXISTS Registrations (
+       Id INT AUTO_INCREMENT PRIMARY KEY,
+       Name VARCHAR(80) NOT NULL,
+       FatherName VARCHAR(80) NOT NULL,
+       DateOfBirth DATE NOT NULL,
+       ContactNumber VARCHAR(14) NOT NULL,
+       Address VARCHAR(180) NOT NULL,
+       CreatedAtUtc DATETIME NOT NULL
+   );
+   ```
+6) The repository uses parameterized queries to avoid injection and logs when unexpected row counts occur.
 
 ## 🧪 Commands Cheat Sheet
 
-- Scaffold : `dotnet new mvc -n TroyWingsApp`
 - Restore : `dotnet restore`
 - Build: `dotnet build`
 - Run: `dotnet run`
 - Live reload: `dotnet watch run`
 - Update workloads : `dotnet workload update`
+- Lint/format (C#): `dotnet format` (optional, not required for this project)
+- Publish (example): `dotnet publish -c Release -o ./publish`
 
 ## 🎛️ Customization
 
-- Palette: tweak CSS variables in `wwwroot/css/registration.css` (`--accent`, `--bg-*`, etc.).
-- Branding: update copy/icons, brand name, and links in `Index.cshtml`.
-- SEO: replace canonical, OG tags, and JSON-LD placeholders with production values.
-- Backend: adjust or extend the controller/action as needed; persistence is wired to MySQL via EF Core.
-- Secrets: move DB credentials into user secrets or environment variables for production; current settings are for local dev only.
+- Palette: adjust CSS variables in `wwwroot/css/registration.css` (`--accent`, `--bg-*`, etc.).
+- Branding: update copy/icons and links in the shared partials or main view.
+- SEO: swap canonical, OG tags, and JSON-LD placeholders with production values.
+- Persistence: repository uses `MySqlConnector`; update connection string for your environment and extend SQL if you add fields.
+- Secrets: move DB credentials into user secrets or environment variables for non-dev usage.
 
 ## 🧩 Accessibility & Responsiveness
 
-- Labels and inputs with clear focus rings; color contrast tuned for low-light palette.
-- Responsive: side-by-side on desktop, stacked on mobile.
-- Large tap targets on mobile; form first on small screens.
+- Labels and inputs with clear focus rings; contrast tuned for the low-light palette.
+- Responsive layout: side-by-side on desktop, stacked on mobile; header/footer remain available.
+- Touch-friendly spacing on small screens.
+- Reduced motion: all key animations disabled when `prefers-reduced-motion` is set.
+- Form feedback: validation summary and invalid-feedback text announced by screen readers when focused.
 
 ## 🛠️ Troubleshooting
 
-- CSS not updating: hard refresh (`Cmd/Ctrl+Shift+R`).
+- CSS/JS not updating: hard refresh (`Cmd/Ctrl+Shift+R`).
 - Dev cert warning: run `dotnet dev-certs https --trust` once.
-- Workload warning: `dotnet workload update`.
+- NuGet restore blocked: ensure network access or pre-restore packages.
+- MySQL connection failures: verify host/port/user/password in `appsettings*.json`; ensure the account can create databases/tables if relying on auto-create.
+- 502/404 while running: check console output for the actual listening URL and verify SSL dev cert trust if using HTTPS.
