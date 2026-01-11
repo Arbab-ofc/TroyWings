@@ -19,4 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
       false
     );
   });
+
+  const successAlert = document.querySelector('.alert.alert-success');
+  if (successAlert) {
+    setTimeout(() => {
+      successAlert.classList.add('d-none');
+    }, 3000);
+  }
 });

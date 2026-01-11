@@ -8,12 +8,12 @@ namespace TroyWingsApp.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly ApplicationDbContext _db;
+    private readonly IRegistrationRepository _repository;
 
-    public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
+    public HomeController(ILogger<HomeController> logger, IRegistrationRepository repository)
     {
         _logger = logger;
-        _db = db;
+        _repository = repository;
     }
 
     public IActionResult Index()
@@ -32,8 +32,7 @@ public class HomeController : Controller
         }
 
         registration.CreatedAtUtc = DateTime.UtcNow;
-        _db.Registrations.Add(registration);
-        await _db.SaveChangesAsync();
+        await _repository.SaveAsync(registration);
 
         TempData["Success"] = "Registration submitted successfully.";
         return RedirectToAction("Index");

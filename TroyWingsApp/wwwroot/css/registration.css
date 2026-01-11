@@ -145,6 +145,10 @@ body::after {
   text-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
 }
 
+.text-bright {
+  color: #fefefe;
+}
+
 .founded-pill {
   background: rgba(157, 213, 255, 0.1);
   color: var(--accent);
@@ -226,6 +230,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .form-text.text-muted {
   color: #ffd166 !important;
+}
+
+.form-note {
+  color: #ffffff !important;
 }
 
 .btn-accent {

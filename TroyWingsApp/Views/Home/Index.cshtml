@@ -40,75 +40,12 @@
 }
 
 <div class="registration-page py-4">
-    <header class="top-brand py-3">
-        <div class="container d-flex align-items-center justify-content-between">
-            <a class="brand-link d-inline-flex align-items-center gap-2" href="/" aria-label="Troywings Technologies home">
-                <span class="brand-icon-soft"><i class="bi bi-gem"></i></span>
-                <span class="fw-semibold brand-text">Troywings Technologies</span>
-            </a>
-        </div>
-    </header>
+    @await Html.PartialAsync("_RegistrationHeader")
 
     <main class="container registration-shell">
         <div class="row g-4 align-items-stretch">
             <div class="col-12 col-lg-5 order-2 order-lg-1">
-                <div class="card premium-card h-100 fade-slide-left">
-                    <div class="card-body p-4 p-xl-5 d-flex flex-column gap-3">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h1 class="display-6 mb-0 title-serif brand-title" style="color:#ffd166;">Troywings Technologies</h1>
-                            <span class="badge rounded-pill founded-pill">Founded 2021</span>
-                        </div>
-                        <p class="lead text-soft">
-                            We blend research, innovation, and purposeful engineering to create products and services that solve real-world problems while uplifting people and businesses.
-                        </p>
-                        <ul class="list-unstyled d-grid gap-3">
-                            <li class="d-flex gap-3 align-items-start">
-                                <span class="icon-circle"><i class="bi bi-lightbulb"></i></span>
-                                <div>
-                                    <div class="fw-semibold" style="color:#fefefe;">Research & innovation that unlocks solutions</div>
-                                    <div class="text-soft">Insights move swiftly into prototypes and production.</div>
-                                </div>
-                            </li>
-                            <li class="d-flex gap-3 align-items-start">
-                                <span class="icon-circle"><i class="bi bi-cpu"></i></span>
-                                <div>
-                                    <div class="fw-semibold" style="color:#fefefe;">Product development & services</div>
-                                    <div class="text-soft">High-touch delivery across design, build, and support.</div>
-                                </div>
-                            </li>
-                            <li class="d-flex gap-3 align-items-start">
-                                <span class="icon-circle"><i class="bi bi-mortarboard"></i></span>
-                                <div>
-                                    <div class="fw-semibold" style="color:#fefefe;">Practical engineering training</div>
-                                    <div class="text-soft">Mentored programs with industry tools and processes.</div>
-                                </div>
-                            </li>
-                            <li class="d-flex gap-3 align-items-start">
-                                <span class="icon-circle"><i class="bi bi-heart-pulse"></i></span>
-                                <div>
-                                    <div class="fw-semibold" style="color:#fefefe;">Value-first culture</div>
-                                    <div class="text-soft">Employee care, customer delight, and leadership grounded in human values.</div>
-                                </div>
-                            </li>
-                            <li class="d-flex gap-3 align-items-start">
-                                <span class="icon-circle"><i class="bi bi-globe2"></i></span>
-                                <div>
-                                    <div class="fw-semibold" style="color:#fefefe;">Impactful ecosystem support</div>
-                                    <div class="text-soft">CSR internships (6 &amp; 9 months) teach planning, design, and development through real delivery cycles.</div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="why-register p-3 p-lg-4 rounded-4 mt-auto">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="bi bi-stars text-accent"></i>
-                                <span class="fw-semibold" style="color:#fefefe;">Why register</span>
-                            </div>
-                            <p class="mb-0 text-soft">
-                                Secure a personalized journey across innovation programs, training cohorts, and premium services designed to enrich engineering and strengthen startups nationwide.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <partial name="_BrandShowcase" />
             </div>
             <div class="col-12 col-lg-7 order-1 order-lg-2">
                 <div class="card premium-card h-100 fade-slide-right">
@@ -116,7 +53,7 @@
                         <div class="d-flex justify-content-between align-items-start mb-4">
                             <div>
                                 <div class="eyebrow text-uppercase">Registration</div>
-                                <h2 class="h3 mb-0 title-serif heading-accent" style="color:#ffd166;">Create your account</h2>
+                                <h2 class="h3 mb-0 title-serif heading-accent">Create your account</h2>
                                 <p class="text-soft mb-0">Access curated resources, mentorship, and delivery excellence.</p>
                             </div>
                             <i class="bi bi-shield-check text-accent fs-3"></i>
@@ -153,10 +90,9 @@
                                 <label asp-for="DateOfBirth" class="form-label"></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
-                                    <input asp-for="DateOfBirth" type="date" class="form-control" required style="color:#ffffff !important;" />
+                                    <input asp-for="DateOfBirth" type="date" class="form-control" required />
                                     <span asp-validation-for="DateOfBirth" class="invalid-feedback"></span>
                                 </div>
-                                <div class="form-text text-muted" style="color:#ffffff !important;">Used to tailor mentoring milestones.</div>
                             </div>
                             <div class="col-md-6">
                                 <label asp-for="ContactNumber" class="form-label"></label>
@@ -165,7 +101,6 @@
                                     <input asp-for="ContactNumber" type="tel" class="form-control" placeholder="+91 98765 43210" required pattern="^(\\+?91[- ]?)?[6-9]\\d{9}$" minlength="10" maxlength="14" />
                                     <span asp-validation-for="ContactNumber" class="invalid-feedback"></span>
                                 </div>
-                                <div class="form-text text-muted" style="color:#ffffff !important;">We verify contact to keep your account secure.</div>
                             </div>
                             <div class="col-12">
                                 <label asp-for="Address" class="form-label"></label>
@@ -181,7 +116,7 @@
                                     <i class="bi bi-arrow-right-short ms-1"></i>
                                 </button>
                                 <div class="text-center mt-2">
-                                    <a href="#" class="link-secondary small" style="color:#ffffff !important;">Already have an account? Sign in</a>
+                                    <a href="#" class="link-secondary small">Already have an account? Sign in</a>
                                 </div>
                             </div>
                         </form>
@@ -191,22 +126,7 @@
         </div>
     </main>
 
-    <footer class="footer-premium mt-5">
-        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
-            <div class="d-flex align-items-center gap-2">
-                <span class="brand-icon-soft"><i class="bi bi-gem"></i></span>
-                <div>
-                    <div class="fw-semibold">Troywings Technologies</div>
-                    <small class="text-soft">Founded 2021 • Engineering with purpose</small>
-                </div>
-            </div>
-            <div class="d-flex gap-3">
-                <a href="#" class="footer-link">Privacy</a>
-                <a href="#" class="footer-link">Terms</a>
-                <a href="#" class="footer-link">Support</a>
-            </div>
-        </div>
-    </footer>
+    @await Html.PartialAsync("_RegistrationFooter")
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
