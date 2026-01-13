@@ -23,7 +23,7 @@ public class HomeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register(Registration registration)
+    public IActionResult Register(Registration registration)
     {
         if (!ModelState.IsValid)
         {
@@ -32,7 +32,7 @@ public class HomeController : Controller
         }
 
         registration.CreatedAtUtc = DateTime.UtcNow;
-        await _repository.SaveAsync(registration);
+        _repository.Save(registration);
 
         TempData["Success"] = "Registration submitted successfully.";
         return RedirectToAction("Index");

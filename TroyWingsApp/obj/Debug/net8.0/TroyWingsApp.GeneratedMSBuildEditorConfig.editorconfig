@@ -34,12 +34,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19CcmFuZFNob3djYXNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/Views/Shared/_RegistrationFooter.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19SZWdpc3RyYXRpb25Gb290ZXIuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/Views/Shared/_RegistrationHeader.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19SZWdpc3RyYXRpb25IZWFkZXIuY3NodG1s
+[/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/Views/Shared/_RegistrationLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19SZWdpc3RyYXRpb25MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/Views/Shared/_ValidationScriptsPartial.cshtml]

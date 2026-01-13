@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TroyWingsApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+227d1e802119b442ab640a39f5bf6a4d7a7d36f5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+560c68c4e46ecc5d61c777f37d704e098a0647e3")]
 [assembly: System.Reflection.AssemblyProductAttribute("TroyWingsApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TroyWingsApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -10,7 +10,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var repository = scope.ServiceProvider.GetRequiredService<IRegistrationRepository>();
-    await repository.EnsureDatabaseSetupAsync();
+    repository.EnsureDatabaseSetup();
 }
 
 

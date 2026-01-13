@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    @RenderSection("Head", required: false)
+</head>
+<body>
+    <div class="registration-page py-4">
+        <header class="top-brand py-3">
+            <div class="container d-flex align-items-center justify-content-between">
+                <a class="brand-link d-inline-flex align-items-center gap-2" href="/" aria-label="Troywings Technologies home">
+                    <span class="brand-icon-soft"><i class="bi bi-gem"></i></span>
+                    <span class="fw-semibold brand-text">Troywings Technologies</span>
+                </a>
+            </div>
+        </header>
+
+        @RenderBody()
+
+        <footer class="footer-premium mt-5">
+            <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="brand-icon-soft"><i class="bi bi-gem"></i></span>
+                    <div>
+                        <div class="fw-semibold text-bright">Troywings Technologies</div>
+                        <small class="text-soft">Founded 2021 • Engineering with purpose</small>
+                    </div>
+                </div>
+                <div class="d-flex gap-3">
+                    <a href="#" class="footer-link">Privacy</a>
+                    <a href="#" class="footer-link">Terms</a>
+                    <a href="#" class="footer-link">Support</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,5 +1,6 @@
 @model TroyWingsApp.Models.Registration
 @{
+    Layout = "_RegistrationLayout";
     ViewData["Title"] = "Register | Troywings Technologies";
 }
 
@@ -39,95 +40,91 @@
     </script>
 }
 
-<div class="registration-page py-4">
-    @await Html.PartialAsync("_RegistrationHeader")
-
-    <main class="container registration-shell">
-        <div class="row g-4 align-items-stretch">
-            <div class="col-12 col-lg-5 order-2 order-lg-1">
-                <partial name="_BrandShowcase" />
-            </div>
-            <div class="col-12 col-lg-7 order-1 order-lg-2">
-                <div class="card premium-card h-100 fade-slide-right">
-                    <div class="card-body p-4 p-xl-5">
-                        <div class="d-flex justify-content-between align-items-start mb-4">
-                            <div>
-                                <div class="eyebrow text-uppercase">Registration</div>
-                                <h2 class="h3 mb-0 title-serif heading-accent">Create your account</h2>
-                                <p class="text-soft mb-0">Access curated resources, mentorship, and delivery excellence.</p>
-                            </div>
-                            <i class="bi bi-shield-check text-accent fs-3"></i>
+<main class="container registration-shell">
+    <div class="row g-4 align-items-stretch">
+        <div class="col-12 col-lg-5 order-2 order-lg-1">
+            <partial name="_BrandShowcase" />
+        </div>
+        <div class="col-12 col-lg-7 order-1 order-lg-2">
+            <div class="card premium-card h-100 fade-slide-right">
+                <div class="card-body p-4 p-xl-5">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <div class="eyebrow text-uppercase">Registration</div>
+                            <h2 class="h3 mb-0 title-serif heading-accent">Create your account</h2>
+                            <p class="text-soft mb-0">Access curated resources, mentorship, and delivery excellence.</p>
                         </div>
-                        @if (TempData["Success"] is string successMessage)
-                        {
-                            <div class="alert alert-success small" role="alert">@successMessage</div>
-                        }
-                        @if (TempData["Error"] is string errorMessage)
-                        {
-                            <div class="alert alert-danger small" role="alert">@errorMessage</div>
-                        }
-                        <div id="validationSummary" class="alert alert-danger @(ViewData.ModelState.ErrorCount > 0 ? "" : "d-none") small" role="alert" asp-validation-summary="ModelOnly">
-                            Please fix the highlighted fields to continue.
-                        </div>
-                        <form asp-action="Register" asp-controller="Home" method="post" class="row g-3 needs-validation" novalidate>
-                            <div class="col-12">
-                                <label asp-for="Name" class="form-label"></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input asp-for="Name" type="text" class="form-control" placeholder="Your full name" required minlength="3" maxlength="80" />
-                                    <span asp-validation-for="Name" class="invalid-feedback"></span>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <label asp-for="FatherName" class="form-label"></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-person-heart"></i></span>
-                                    <input asp-for="FatherName" type="text" class="form-control" placeholder="Father's full name" required minlength="3" maxlength="80" />
-                                    <span asp-validation-for="FatherName" class="invalid-feedback"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="DateOfBirth" class="form-label"></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
-                                    <input asp-for="DateOfBirth" type="date" class="form-control" required />
-                                    <span asp-validation-for="DateOfBirth" class="invalid-feedback"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="ContactNumber" class="form-label"></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-phone"></i></span>
-                                    <input asp-for="ContactNumber" type="tel" class="form-control" placeholder="+91 98765 43210" required pattern="^(\\+?91[- ]?)?[6-9]\\d{9}$" minlength="10" maxlength="14" />
-                                    <span asp-validation-for="ContactNumber" class="invalid-feedback"></span>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <label asp-for="Address" class="form-label"></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                    <textarea asp-for="Address" class="form-control" placeholder="Street, city, state" rows="3" required minlength="10" maxlength="180"></textarea>
-                                    <span asp-validation-for="Address" class="invalid-feedback"></span>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-accent w-100 py-2" type="submit">
-                                    <span>Create Account</span>
-                                    <i class="bi bi-arrow-right-short ms-1"></i>
-                                </button>
-                                <div class="text-center mt-2">
-                                    <a href="#" class="link-secondary small">Already have an account? Sign in</a>
-                                </div>
-                            </div>
-                        </form>
+                        <i class="bi bi-shield-check text-accent fs-3"></i>
                     </div>
+                    @if (TempData["Success"] is string successMessage)
+                    {
+                        <div class="alert alert-success small" role="alert">@successMessage</div>
+                    }
+                    @if (TempData["Error"] is string errorMessage)
+                    {
+                        <div class="alert alert-danger small" role="alert">@errorMessage</div>
+                    }
+                    <div id="validationSummary" class="alert alert-danger @(ViewData.ModelState.ErrorCount > 0 ? "" : "d-none") small" role="alert" asp-validation-summary="ModelOnly">
+                        Please fix the highlighted fields to continue.
+                    </div>
+                    <form asp-action="Register" asp-controller="Home" method="post" class="row g-3 needs-validation" novalidate>
+                        <div class="col-12">
+                            <label asp-for="Name" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input asp-for="Name" type="text" class="form-control" placeholder="Your full name" required minlength="3" maxlength="80" />
+                                <span asp-validation-for="Name" class="invalid-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="FatherName" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person-heart"></i></span>
+                                <input asp-for="FatherName" type="text" class="form-control" placeholder="Father's full name" required minlength="3" maxlength="80" />
+                                <span asp-validation-for="FatherName" class="invalid-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="DateOfBirth" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                                <input asp-for="DateOfBirth" type="date" class="form-control" required />
+                                <span asp-validation-for="DateOfBirth" class="invalid-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ContactNumber" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                                <input asp-for="ContactNumber" type="tel" class="form-control" placeholder="+91 98765 43210" required pattern="^(\\+?91[- ]?)?[6-9]\\d{9}$" minlength="10" maxlength="14" />
+                                <span asp-validation-for="ContactNumber" class="invalid-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Address" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <textarea asp-for="Address" class="form-control" placeholder="Street, city, state" rows="3" required minlength="10" maxlength="180"></textarea>
+                                <span asp-validation-for="Address" class="invalid-feedback"></span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-accent w-100 py-2" type="submit">
+                                <span>Create Account</span>
+                                <i class="bi bi-arrow-right-short ms-1"></i>
+                            </button>
+                            <div class="text-center mt-2">
+                                <a href="#" class="link-secondary small">Already have an account? Sign in</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-    @await Html.PartialAsync("_RegistrationFooter")
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="~/js/registration.js"></script>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="~/js/registration.js"></script>
+}
