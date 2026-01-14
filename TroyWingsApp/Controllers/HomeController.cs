@@ -1,19 +1,19 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using TroyWingsApp.Data;
 using TroyWingsApp.Models;
+using TroyWingsApp.Services;
 
 namespace TroyWingsApp.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IRegistrationRepository _repository;
+    private readonly IRegistrationService _registrationService;
 
-    public HomeController(ILogger<HomeController> logger, IRegistrationRepository repository)
+    public HomeController(ILogger<HomeController> logger, IRegistrationService registrationService)
     {
         _logger = logger;
-        _repository = repository;
+        _registrationService = registrationService;
     }
 
     public IActionResult Index()
@@ -31,8 +31,7 @@ public class HomeController : Controller
             return View("Index", registration);
         }
 
-        registration.CreatedAtUtc = DateTime.UtcNow;
-        _repository.Save(registration);
+        _registrationService.Register(registration);
 
         TempData["Success"] = "Registration submitted successfully.";
         return RedirectToAction("Index");

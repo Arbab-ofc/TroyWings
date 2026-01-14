@@ -1,3 +1,4 @@
+using System.Data;
 using MySqlConnector;
 using TroyWingsApp.Models;
 
@@ -11,6 +12,7 @@ public interface IRegistrationRepository
 
 public class MySqlRegistrationRepository : IRegistrationRepository
 {
+    private const string CreateRegistrationProcedure = "sp_create_registration";
     private readonly string _connectionString;
     private readonly ILogger<MySqlRegistrationRepository> _logger;
 
@@ -25,6 +27,23 @@ public class MySqlRegistrationRepository : IRegistrationRepository
     {
         using var connection = new MySqlConnection(_connectionString);
         connection.Open();
+
+        
+        using var command = new MySqlCommand("""
+            SELECT ROUTINE_NAME
+            FROM INFORMATION_SCHEMA.ROUTINES
+            WHERE ROUTINE_SCHEMA = DATABASE()
+              AND ROUTINE_NAME = @procedure
+              AND ROUTINE_TYPE = 'PROCEDURE'
+            LIMIT 1;
+            """, connection);
+        command.Parameters.AddWithValue("@procedure", CreateRegistrationProcedure);
+
+        var exists = command.ExecuteScalar();
+        if (exists is null)
+        {
+            _logger.LogWarning("Stored procedure {Procedure} was not found in the current schema.", CreateRegistrationProcedure);
+        }
     }
 
     public void Save(Registration registration)
@@ -32,20 +51,17 @@ public class MySqlRegistrationRepository : IRegistrationRepository
         using var connection = new MySqlConnection(_connectionString);
         connection.Open();
 
-        const string insertSql = """
-            INSERT INTO Registrations
-                (Name, FatherName, DateOfBirth, ContactNumber, Address, CreatedAtUtc)
-            VALUES
-                (@Name, @FatherName, @DateOfBirth, @ContactNumber, @Address, @CreatedAtUtc);
-            """;
+        using var command = new MySqlCommand(CreateRegistrationProcedure, connection)
+        {
+            CommandType = CommandType.StoredProcedure
+        };
 
-        using var command = new MySqlCommand(insertSql, connection);
-        command.Parameters.AddWithValue("@Name", registration.Name);
-        command.Parameters.AddWithValue("@FatherName", registration.FatherName);
-        command.Parameters.AddWithValue("@DateOfBirth", registration.DateOfBirth?.ToDateTime(TimeOnly.MinValue));
-        command.Parameters.AddWithValue("@ContactNumber", registration.ContactNumber);
-        command.Parameters.AddWithValue("@Address", registration.Address);
-        command.Parameters.AddWithValue("@CreatedAtUtc", registration.CreatedAtUtc);
+        command.Parameters.AddWithValue("@p_name", registration.Name);
+        command.Parameters.AddWithValue("@p_father_name", registration.FatherName);
+        command.Parameters.AddWithValue("@p_date_of_birth", registration.DateOfBirth?.ToDateTime(TimeOnly.MinValue));
+        command.Parameters.AddWithValue("@p_contact_number", registration.ContactNumber);
+        command.Parameters.AddWithValue("@p_address", registration.Address);
+        command.Parameters.AddWithValue("@p_created_at_utc", registration.CreatedAtUtc);
 
         var affected = command.ExecuteNonQuery();
         if (affected != 1)

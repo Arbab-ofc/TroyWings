@@ -30,5 +30,4 @@
 /Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/obj/Debug/net8.0/ref/TroyWingsApp.dll
 /Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/bin/Debug/net8.0/MySqlConnector.dll
 /Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/obj/Debug/net8.0/TroyWingsApp.csproj.AssemblyReference.cache
-/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/obj/Debug/net8.0/TroyWingsApp.sourcelink.json
 /Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/obj/Debug/net8.0/TroyWingsApp.csproj.CopyComplete

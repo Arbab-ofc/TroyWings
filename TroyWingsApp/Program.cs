@@ -1,8 +1,10 @@
 using TroyWingsApp.Data;
+using TroyWingsApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IRegistrationRepository, MySqlRegistrationRepository>();
+builder.Services.AddScoped<IRegistrationRepository, MySqlRegistrationRepository>();
+builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
