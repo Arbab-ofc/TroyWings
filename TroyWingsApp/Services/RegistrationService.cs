@@ -6,6 +6,8 @@ namespace TroyWingsApp.Services;
 public interface IRegistrationService
 {
     void Register(Registration registration);
+    PagedResult<Registration> GetRegistrations(int page, int pageSize);
+    bool UpdateRegistration(Registration registration);
 }
 
 public class RegistrationService : IRegistrationService
@@ -35,6 +37,29 @@ public class RegistrationService : IRegistrationService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to register user {Name}", registration.Name);
+            throw;
+        }
+    }
+
+    public PagedResult<Registration> GetRegistrations(int page, int pageSize)
+    {
+        return _repository.GetPage(page, pageSize);
+    }
+
+    public bool UpdateRegistration(Registration registration)
+    {
+        if (registration == null)
+        {
+            throw new ArgumentNullException(nameof(registration));
+        }
+
+        try
+        {
+            return _repository.Update(registration);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update registration {Id}", registration.Id);
             throw;
         }
     }

@@ -96,7 +96,7 @@
                             <label asp-for="ContactNumber" class="form-label"></label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-phone"></i></span>
-                                <input asp-for="ContactNumber" type="tel" class="form-control" placeholder="+91 98765 43210" required pattern="^(\\+?91[- ]?)?[6-9]\\d{9}$" minlength="10" maxlength="14" />
+                                <input asp-for="ContactNumber" type="tel" class="form-control" placeholder="+91 98765 43210" required pattern="^(\+?91[- ]?)?[6-9]\d{9}$" minlength="10" maxlength="14" />
                                 <span asp-validation-for="ContactNumber" class="invalid-feedback"></span>
                             </div>
                         </div>

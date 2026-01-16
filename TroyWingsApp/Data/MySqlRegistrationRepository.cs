@@ -8,6 +8,8 @@ public interface IRegistrationRepository
 {
     void EnsureDatabaseSetup();
     void Save(Registration registration);
+    PagedResult<Registration> GetPage(int page, int pageSize);
+    bool Update(Registration registration);
 }
 
 public class MySqlRegistrationRepository : IRegistrationRepository
@@ -68,5 +70,78 @@ public class MySqlRegistrationRepository : IRegistrationRepository
         {
             _logger.LogWarning("Unexpected rows affected when inserting registration: {Count}", affected);
         }
+    }
+
+    public PagedResult<Registration> GetPage(int page, int pageSize)
+    {
+        var safePage = Math.Max(1, page);
+        var safePageSize = Math.Clamp(pageSize, 1, 24);
+
+        using var connection = new MySqlConnection(_connectionString);
+        connection.Open();
+
+        using var countCommand = new MySqlCommand("SELECT COUNT(*) FROM Registrations;", connection);
+        var totalCount = Convert.ToInt32(countCommand.ExecuteScalar() ?? 0);
+
+        var offset = (safePage - 1) * safePageSize;
+        using var listCommand = new MySqlCommand("""
+            SELECT Id, Name, FatherName, DateOfBirth, ContactNumber, Address, CreatedAtUtc
+            FROM Registrations
+            ORDER BY CreatedAtUtc DESC
+            LIMIT @limit OFFSET @offset;
+            """, connection);
+        listCommand.Parameters.AddWithValue("@limit", safePageSize);
+        listCommand.Parameters.AddWithValue("@offset", offset);
+
+        using var reader = listCommand.ExecuteReader();
+        var items = new List<Registration>();
+        while (reader.Read())
+        {
+            items.Add(new Registration
+            {
+                Id = reader.GetInt32("Id"),
+                Name = reader.GetString("Name"),
+                FatherName = reader.GetString("FatherName"),
+                DateOfBirth = reader.IsDBNull("DateOfBirth")
+                    ? null
+                    : DateOnly.FromDateTime(reader.GetDateTime("DateOfBirth")),
+                ContactNumber = reader.GetString("ContactNumber"),
+                Address = reader.GetString("Address"),
+                CreatedAtUtc = reader.GetDateTime("CreatedAtUtc")
+            });
+        }
+
+        return new PagedResult<Registration>
+        {
+            Items = items,
+            Page = safePage,
+            PageSize = safePageSize,
+            TotalCount = totalCount
+        };
+    }
+
+    public bool Update(Registration registration)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        connection.Open();
+
+        using var command = new MySqlCommand("""
+            UPDATE Registrations
+            SET Name = @name,
+                FatherName = @fatherName,
+                DateOfBirth = @dateOfBirth,
+                ContactNumber = @contactNumber,
+                Address = @address
+            WHERE Id = @id;
+            """, connection);
+
+        command.Parameters.AddWithValue("@id", registration.Id);
+        command.Parameters.AddWithValue("@name", registration.Name);
+        command.Parameters.AddWithValue("@fatherName", registration.FatherName);
+        command.Parameters.AddWithValue("@dateOfBirth", registration.DateOfBirth?.ToDateTime(TimeOnly.MinValue));
+        command.Parameters.AddWithValue("@contactNumber", registration.ContactNumber);
+        command.Parameters.AddWithValue("@address", registration.Address);
+
+        return command.ExecuteNonQuery() == 1;
     }
 }

@@ -1,6 +1,6 @@
-# TroyWingsApp — Registration Experience
+# TroyWingsApp — Registration + Users Directory
 
-Premium registration UI for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Icons, and Google Fonts. The page ships with SEO/OG/JSON-LD placeholders, glassmorphism styling, responsive layout, client + server validation, and MySQL persistence via `MySqlConnector`.
+Premium registration UI and a luxury Users directory for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Icons, and Google Fonts. The app includes SEO/OG/JSON-LD placeholders, glassmorphism styling, responsive layout, AJAX-powered pagination/editing, and MySQL persistence via `MySqlConnector`.
 
 ## 🔧 Tech Stack & Tools
 
@@ -16,20 +16,26 @@ Premium registration UI for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Ico
 
 - Bootstrap 5.3.3 + Bootstrap Icons via CDN.
 - Google Fonts (Playfair Display, Inter).
-- Custom CSS/JS under `wwwroot` (gradients, glass cards, animations, validation behavior, success alert timeout).
+- Custom CSS/JS under `wwwroot` (gradients, glass cards, animations, validation behavior, success alert timeout, AJAX users UI).
 - MySQL persistence implemented with lightweight `MySqlConnector` repository (no EF Core runtime dependency).
 
 ## 📂 Project Layout
 
-- `TroyWingsApp/Views/Home/Index.cshtml` — Main Razor view with SEO/OG/JSON-LD, registration form, and hooks into shared partials and validation UI.
-- `TroyWingsApp/Views/Shared/_RegistrationHeader.cshtml` — Shared header/brand link.
-- `TroyWingsApp/Views/Shared/_RegistrationFooter.cshtml` — Shared footer links and brand block.
+- `TroyWingsApp/Views/Home/Index.cshtml` — Registration view with SEO/OG/JSON-LD and validation UI.
+- `TroyWingsApp/Views/Users/Index.cshtml` — Users directory view with AJAX paging and edit modal.
+- `TroyWingsApp/Views/Shared/_RegistrationLayout.cshtml` — Shared layout with header/nav and footer.
 - `TroyWingsApp/Views/Shared/_BrandShowcase.cshtml` — Left-side brand/story card.
 - `TroyWingsApp/wwwroot/css/registration.css` — Luxury theme (gradient/noise/vignette background, glass cards, accent palette, focus/hover states, motion + reduced-motion support).
+- `TroyWingsApp/wwwroot/css/users.css` — Users page styling and responsive grid.
 - `TroyWingsApp/wwwroot/js/registration.js` — Client-side validation summary toggle, Bootstrap `was-validated`, and 3-second auto-dismiss for success alerts.
+- `TroyWingsApp/wwwroot/js/users.js` — AJAX fetch/pagination and edit modal handling.
+- `TroyWingsApp/wwwroot/js/site.js` — Mobile header/hamburger behavior.
 - `TroyWingsApp/Models/Registration.cs` — Form model with validation attributes.
-- `TroyWingsApp/Data/MySqlRegistrationRepository.cs` — Repository using `MySqlConnector` to auto-create DB/table if missing and insert registrations.
+- `TroyWingsApp/Models/UpdateRegistrationRequest.cs` — DTO for edit modal updates.
+- `TroyWingsApp/Models/PagedResult.cs` — Pagination envelope.
+- `TroyWingsApp/Data/MySqlRegistrationRepository.cs` — Repository using `MySqlConnector` to insert, list, and update registrations.
 - `TroyWingsApp/Controllers/HomeController.cs` — Receives form posts, validates, and stores via repository.
+- `TroyWingsApp/Controllers/UsersController.cs` — Users list JSON endpoint and update endpoint.
 - `TroyWingsApp/Program.cs` — Service registration for repository, DB/table bootstrap on startup, routing, middleware.
 
 ## 🧭 UX & Layout Highlights
@@ -38,12 +44,12 @@ Premium registration UI for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Ico
 - Premium background: deep navy/charcoal gradient with vignette plus subtle noise and glow accents.
 - Cards: rounded, glassy, shadowed; hover lift and glow; accent typography.
 - Animations: fade/slide on load; honors `prefers-reduced-motion`.
-- Header/footer are shared partials for consistency across views.
+- Header/footer are shared in a single layout for consistency across views.
 
 ## ✅ Form & Validation
 
 - Fields: Name, Father’s Name, Date of Birth, Contact Number, Address (textarea).
-- HTML5 + Bootstrap validation: `required`, `minlength/maxlength`, India phone pattern `^(\\+?91[- ]?)?[6-9]\\d{9}$`.
+- HTML5 + Bootstrap validation: `required`, `minlength/maxlength`, India phone pattern `^(\+?91[- ]?)?[6-9]\d{9}$`.
 - Inline `.invalid-feedback` plus top summary alert `#validationSummary`.
 - Success alert auto-hides after 3 seconds; validation summary stays hidden when the form is valid.
 - Server-side validation via data annotations on `Registration`; repository persists on success.
@@ -73,11 +79,8 @@ From `TroyWingsApp/`:
      "Default": "Server=127.0.0.1;Port=3306;Database=troywings_db;User=root;Password=Arbab@321123;"
    }
    ```
-3) On startup, `MySqlRegistrationRepository` will:
-   - Create the database if it does not exist.
-   - Create the `Registrations` table if it does not exist.
-4) To seed or extend schema, add your own SQL or migrations toolchain; current flow is minimal and code-first via SQL scripts in the repository.
-5) Table definition created at runtime:
+3) Ensure the `Registrations` table exists in `troywings_db`.
+4) Table definition:
    ```sql
    CREATE TABLE IF NOT EXISTS Registrations (
        Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -89,7 +92,7 @@ From `TroyWingsApp/`:
        CreatedAtUtc DATETIME NOT NULL
    );
    ```
-6) The repository uses parameterized queries to avoid injection and logs when unexpected row counts occur.
+5) The repository uses parameterized queries to avoid injection and logs when unexpected row counts occur.
 
 ## 🧪 Commands Cheat Sheet
 
@@ -108,6 +111,12 @@ From `TroyWingsApp/`:
 - SEO: swap canonical, OG tags, and JSON-LD placeholders with production values.
 - Persistence: repository uses `MySqlConnector`; update connection string for your environment and extend SQL if you add fields.
 - Secrets: move DB credentials into user secrets or environment variables for non-dev usage.
+
+## 👥 Users Directory
+
+- Route: `/Users` (Razor view), `/Users/List` (JSON), `/Users/Update` (JSON).
+- Pagination: desktop/tablet shows 4 cards per page (2x2); mobile shows 2 per page.
+- Editing: "Edit" button on each card opens a modal and saves via AJAX.
 
 ## 🧩 Accessibility & Responsiveness
 

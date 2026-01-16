@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets/css/site.css"
     },
     {
+      "Id": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/css/users.css",
+      "PackagePath": "staticwebassets/css/users.css"
+    },
+    {
       "Id": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/favicon.ico",
       "PackagePath": "staticwebassets/favicon.ico"
     },
@@ -23,6 +27,10 @@
     {
       "Id": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
+    },
+    {
+      "Id": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/js/users.js",
+      "PackagePath": "staticwebassets/js/users.js"
     },
     {
       "Id": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/lib/bootstrap/LICENSE",

@@ -14,6 +14,15 @@
                     <span class="brand-icon-soft"><i class="bi bi-gem"></i></span>
                     <span class="fw-semibold brand-text">Troywings Technologies</span>
                 </a>
+                <nav class="top-nav d-flex align-items-center" aria-label="Primary">
+                    <button class="nav-toggle" type="button" aria-controls="primaryNav" aria-expanded="false">
+                        <span class="nav-toggle__icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Toggle navigation</span>
+                    </button>
+                    <div id="primaryNav" class="nav-links">
+                        <a class="nav-link-soft" asp-controller="Users" asp-action="Index">Users</a>
+                    </div>
+                </nav>
             </div>
         </header>
 
@@ -37,6 +46,7 @@
         </footer>
     </div>
 
+    <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

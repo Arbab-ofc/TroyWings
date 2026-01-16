@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "w31dqihu6MKhAY3ExXii4h19T4NVA1hO+w5irDixSmU=",
+  "Hash": "QHJ5rvxGYtL3qjp5rN9ZIZx1ZhFpQ62l4HxWL+94uMk=",
   "Source": "TroyWingsApp",
   "BasePath": "_content/TroyWingsApp",
   "Mode": "Default",
@@ -93,6 +93,25 @@
       "OriginalItemSpec": "wwwroot/css/site.css"
     },
     {
+      "Identity": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/css/users.css",
+      "SourceId": "TroyWingsApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/",
+      "BasePath": "_content/TroyWingsApp",
+      "RelativePath": "css/users.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/users.css"
+    },
+    {
       "Identity": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/favicon.ico",
       "SourceId": "TroyWingsApp",
       "SourceType": "Discovered",
@@ -148,6 +167,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/js/site.js"
+    },
+    {
+      "Identity": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/js/users.js",
+      "SourceId": "TroyWingsApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/",
+      "BasePath": "_content/TroyWingsApp",
+      "RelativePath": "js/users.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/users.js"
     },
     {
       "Identity": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",

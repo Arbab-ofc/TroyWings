@@ -1,6 +1,6 @@
-# TroyWingsApp — Registration Experience
+# TroyWingsApp — Registration + Users Directory
 
-Premium registration UI for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Icons, and Google Fonts. The backend now follows a service-layer architecture with a MySQL stored procedure (`sp_create_registration`) invoked via `MySqlConnector`.
+Premium registration UI and a luxury Users directory for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Icons, and Google Fonts. The backend follows a service-layer architecture; registrations are inserted via `sp_create_registration` and the Users page reads/updates directly via `MySqlConnector`.
 
 ## 🔧 Tech Stack & Tools
 
@@ -17,19 +17,24 @@ Premium registration UI for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Ico
 - Bootstrap 5.3.3 + Bootstrap Icons via CDN.
 - Google Fonts (Playfair Display, Inter).
 - Custom CSS/JS under `wwwroot` (gradients, glass cards, animations, validation behavior, success alert timeout).
-- Data access is isolated in a repository; controllers talk to a service layer; persistence uses the stored procedure `sp_create_registration`.
+- Data access is isolated in a repository; controllers talk to a service layer; persistence uses the stored procedure `sp_create_registration` plus direct read/update queries for the Users page.
 
 ## 📂 Project Layout
 
 - `Views/Home/Index.cshtml` — Main Razor view with SEO/OG/JSON-LD, registration form, and hooks into shared partials and validation UI.
-- `Views/Shared/_RegistrationHeader.cshtml` — Shared header/brand link.
-- `Views/Shared/_RegistrationFooter.cshtml` — Shared footer links and brand block.
+- `Views/Users/Index.cshtml` — Users directory view with AJAX paging and edit modal.
+- `Views/Shared/_RegistrationLayout.cshtml` — Shared layout with header/nav and footer.
 - `Views/Shared/_BrandShowcase.cshtml` — Left-side brand/story card.
 - `wwwroot/css/registration.css` — Luxury theme (gradient/noise/vignette background, glass cards, accent palette, focus/hover states, motion + reduced-motion support).
+- `wwwroot/css/users.css` — Users page styling and responsive grid.
 - `wwwroot/js/registration.js` — Client-side validation summary toggle, Bootstrap `was-validated`, and 3-second auto-dismiss for success alerts.
+- `wwwroot/js/users.js` — AJAX fetch/pagination and edit modal handling.
+- `wwwroot/js/site.js` — Mobile header/hamburger behavior.
 - `Models/Registration.cs` — Form model with validation attributes.
 - `Services/RegistrationService.cs` — Service layer that handles registration orchestration and delegates to the repository.
-- `Data/MySqlRegistrationRepository.cs` — Repository using `MySqlConnector`, calling stored procedure `sp_create_registration`.
+- `Models/UpdateRegistrationRequest.cs` — DTO for edit modal updates.
+- `Models/PagedResult.cs` — Pagination envelope.
+- `Data/MySqlRegistrationRepository.cs` — Repository using `MySqlConnector`, calling stored procedure `sp_create_registration` and handling list/update queries.
 - `db/procedures/sp_create_registration.sql` — Stored procedure definition used for inserts.
 - `Program.cs` — DI wiring for repository + service, routing, middleware.
 
@@ -39,12 +44,12 @@ Premium registration UI for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Ico
 - Premium background: deep navy/charcoal gradient with vignette plus subtle noise and glow accents.
 - Cards: rounded, glassy, shadowed; hover lift and glow; accent typography.
 - Animations: fade/slide on load; honors `prefers-reduced-motion`.
-- Header/footer are shared partials for consistency across views.
+- Header/footer are shared in a single layout for consistency across views.
 
 ## ✅ Form & Validation
 
 - Fields: Name, Father’s Name, Date of Birth, Contact Number, Address (textarea).
-- HTML5 + Bootstrap validation: `required`, `minlength/maxlength`, India phone pattern `^(\\+?91[- ]?)?[6-9]\\d{9}$`.
+- HTML5 + Bootstrap validation: `required`, `minlength/maxlength`, India phone pattern `^(\+?91[- ]?)?[6-9]\d{9}$`.
 - Inline `.invalid-feedback` plus top summary alert `#validationSummary`.
 - Success alert auto-hides after 3 seconds; validation summary stays hidden when the form is valid.
 - Server-side validation via data annotations on `Registration`; controller delegates to the service layer, which calls the repository/stored procedure.
@@ -88,6 +93,12 @@ From the project root:
    );
    ```
 5) The repository uses parameterized calls to the stored procedure and logs unexpected row counts.
+
+## 👥 Users Directory
+
+- Route: `/Users` (Razor view), `/Users/List` (JSON), `/Users/Update` (JSON).
+- Pagination: desktop/tablet shows 4 cards per page (2x2); mobile shows 2 per page.
+- Editing: "Edit" button on each card opens a modal and saves via AJAX.
 
 ## 🧪 Commands Cheat Sheet
 
