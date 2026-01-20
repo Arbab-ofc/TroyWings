@@ -9,14 +9,14 @@ Premium registration UI and a luxury Users directory for .NET 8 MVC (Razor) with
 ![Bootstrap 5](https://img.shields.io/badge/Bootstrap%205-7952B3?logo=bootstrap&logoColor=white&style=for-the-badge)
 ![Bootstrap Icons](https://img.shields.io/badge/Bootstrap%20Icons-7952B3?logo=bootstrap&logoColor=white&style=for-the-badge)
 ![Google Fonts](https://img.shields.io/badge/Google%20Fonts-4285F4?logo=googlefonts&logoColor=white&style=for-the-badge)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=111&style=for-the-badge)
+![jQuery](https://img.shields.io/badge/jQuery-0769AD?logo=jquery&logoColor=white&style=for-the-badge)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white&style=for-the-badge)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&style=for-the-badge)
 ![MySqlConnector](https://img.shields.io/badge/MySqlConnector-0D9D58?logo=mysql&logoColor=white&style=for-the-badge)
 
 - Bootstrap 5.3.3 + Bootstrap Icons via CDN.
 - Google Fonts (Playfair Display, Inter).
-- Custom CSS/JS under `wwwroot` (gradients, glass cards, animations, validation behavior, success alert timeout, AJAX users UI).
+- Custom CSS/JS under `wwwroot` (gradients, glass cards, animations, validation behavior, success alert timeout, jQuery-powered users UI).
 - MySQL persistence implemented with lightweight `MySqlConnector` repository (no EF Core runtime dependency).
 
 ## 📂 Project Layout
@@ -24,12 +24,13 @@ Premium registration UI and a luxury Users directory for .NET 8 MVC (Razor) with
 - `TroyWingsApp/Views/Home/Index.cshtml` — Registration view with SEO/OG/JSON-LD and validation UI.
 - `TroyWingsApp/Views/Users/Index.cshtml` — Users directory view with AJAX paging and edit modal.
 - `TroyWingsApp/Views/Shared/_RegistrationLayout.cshtml` — Shared layout with header/nav and footer.
+- `TroyWingsApp/Views/Shared/_Layout.cshtml` — Base layout that loads jQuery before per-page scripts.
 - `TroyWingsApp/Views/Shared/_BrandShowcase.cshtml` — Left-side brand/story card.
 - `TroyWingsApp/wwwroot/css/registration.css` — Luxury theme (gradient/noise/vignette background, glass cards, accent palette, focus/hover states, motion + reduced-motion support).
 - `TroyWingsApp/wwwroot/css/users.css` — Users page styling and responsive grid.
-- `TroyWingsApp/wwwroot/js/registration.js` — Client-side validation summary toggle, Bootstrap `was-validated`, and 3-second auto-dismiss for success alerts.
-- `TroyWingsApp/wwwroot/js/users.js` — AJAX fetch/pagination and edit modal handling.
-- `TroyWingsApp/wwwroot/js/site.js` — Mobile header/hamburger behavior.
+- `TroyWingsApp/wwwroot/js/registration.js` — jQuery-based validation summary toggle, Bootstrap `was-validated`, and 3-second auto-dismiss for success alerts.
+- `TroyWingsApp/wwwroot/js/users.js` — jQuery AJAX paging + edit modal handling.
+- `TroyWingsApp/wwwroot/js/site.js` — jQuery-powered mobile header/hamburger behavior.
 - `TroyWingsApp/Models/Registration.cs` — Form model with validation attributes.
 - `TroyWingsApp/Models/UpdateRegistrationRequest.cs` — DTO for edit modal updates.
 - `TroyWingsApp/Models/PagedResult.cs` — Pagination envelope.
@@ -116,7 +117,7 @@ From `TroyWingsApp/`:
 
 - Route: `/Users` (Razor view), `/Users/List` (JSON), `/Users/Update` (JSON).
 - Pagination: desktop/tablet shows 4 cards per page (2x2); mobile shows 2 per page.
-- Editing: "Edit" button on each card opens a modal and saves via AJAX.
+- Editing: "Edit" button on each card opens a modal and saves via jQuery AJAX.
 
 ## 🧩 Accessibility & Responsiveness
 

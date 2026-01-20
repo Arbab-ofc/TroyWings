@@ -1,21 +1,21 @@
-(() => {
-  const pageEl = document.getElementById('usersPage');
-  if (!pageEl) {
+$(function () {
+  const $pageEl = $('#usersPage');
+  if (!$pageEl.length) {
     return;
   }
 
-  const listUrl = pageEl.dataset.listUrl;
-  const updateUrl = pageEl.dataset.updateUrl;
-  const basePageSize = Number.parseInt(pageEl.dataset.pageSize || '4', 10);
+  const listUrl = $pageEl.data('list-url');
+  const updateUrl = $pageEl.data('update-url');
+  const basePageSize = Number.parseInt($pageEl.data('page-size') || '4', 10);
 
-  const gridEl = document.getElementById('usersGrid');
-  const pagerEl = document.getElementById('usersPager');
-  const statusEl = document.getElementById('usersStatus');
-  const modalEl = document.getElementById('editUserModal');
-  const formEl = document.getElementById('editUserForm');
-  const alertEl = document.getElementById('editUserAlert');
+  const $gridEl = $('#usersGrid');
+  const $pagerEl = $('#usersPager');
+  const $statusEl = $('#usersStatus');
+  const $modalEl = $('#editUserModal');
+  const $formEl = $('#editUserForm');
+  const $alertEl = $('#editUserAlert');
 
-  const modal = modalEl ? new bootstrap.Modal(modalEl) : null;
+  const modal = $modalEl.length ? new bootstrap.Modal($modalEl[0]) : null;
   let currentPage = 1;
   let currentItems = [];
   let currentPageSize = basePageSize;
@@ -39,22 +39,22 @@
   };
 
   const setStatus = (message) => {
-    if (statusEl) {
-      statusEl.textContent = message;
+    if ($statusEl.length) {
+      $statusEl.text(message);
     }
   };
 
   const renderCards = (items) => {
-    if (!gridEl) {
+    if (!$gridEl.length) {
       return;
     }
 
     if (!items.length) {
-      gridEl.innerHTML = '<div class="text-soft">No users found.</div>';
+      $gridEl.html('<div class="text-soft">No users found.</div>');
       return;
     }
 
-    gridEl.innerHTML = items
+    $gridEl.html(items
       .map((user) => {
         return `
           <article class="user-card">
@@ -74,16 +74,16 @@
           </article>
         `;
       })
-      .join('');
+      .join(''));
   };
 
   const renderPager = (page, totalPages) => {
-    if (!pagerEl) {
+    if (!$pagerEl.length) {
       return;
     }
 
     if (totalPages <= 1) {
-      pagerEl.innerHTML = '';
+      $pagerEl.html('');
       return;
     }
 
@@ -107,10 +107,10 @@
       `<button type="button" data-page="${page + 1}" ${page === totalPages ? 'disabled' : ''}>Next</button>`
     );
 
-    pagerEl.innerHTML = buttons.join('');
+    $pagerEl.html(buttons.join(''));
   };
 
-  const loadUsers = async (page = 1) => {
+  const loadUsers = (page = 1) => {
     if (!listUrl) {
       setStatus('Users endpoint missing.');
       return;
@@ -118,29 +118,28 @@
 
     setStatus('Refreshing users...');
 
-    try {
-      const response = await fetch(`${listUrl}?page=${page}&pageSize=${currentPageSize}`, {
-        headers: { Accept: 'application/json' }
+    $.ajax({
+      url: `${listUrl}?page=${page}&pageSize=${currentPageSize}`,
+      method: 'GET',
+      headers: { Accept: 'application/json' }
+    })
+      .done((payload) => {
+        currentItems = payload.items || [];
+        currentPage = payload.page || page;
+        renderCards(currentItems);
+        renderPager(currentPage, payload.totalPages || 1);
+        setStatus(`Showing ${currentItems.length} of ${payload.totalCount || 0} users`);
+      })
+      .fail(() => {
+        setStatus('Unable to load users right now.');
+        if ($gridEl.length) {
+          $gridEl.html('<div class="text-soft">Try refreshing the page.</div>');
+        }
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to load users.');
-      }
-
-      const payload = await response.json();
-      currentItems = payload.items || [];
-      currentPage = payload.page || page;
-      renderCards(currentItems);
-      renderPager(currentPage, payload.totalPages || 1);
-      setStatus(`Showing ${currentItems.length} of ${payload.totalCount || 0} users`);
-    } catch (error) {
-      setStatus('Unable to load users right now.');
-      gridEl.innerHTML = '<div class="text-soft">Try refreshing the page.</div>';
-    }
   };
 
   const openEditModal = (userId) => {
-    if (!modal || !formEl) {
+    if (!modal || !$formEl.length) {
       return;
     }
 
@@ -149,104 +148,89 @@
       return;
     }
 
-    formEl.querySelector('#editUserId').value = user.id;
-    formEl.querySelector('#editName').value = user.name || '';
-    formEl.querySelector('#editFatherName').value = user.fatherName || '';
-    formEl.querySelector('#editDob').value = user.dateOfBirth || '';
-    formEl.querySelector('#editContact').value = user.contactNumber || '';
-    formEl.querySelector('#editAddress').value = user.address || '';
+    $formEl.find('#editUserId').val(user.id);
+    $formEl.find('#editName').val(user.name || '');
+    $formEl.find('#editFatherName').val(user.fatherName || '');
+    $formEl.find('#editDob').val(user.dateOfBirth || '');
+    $formEl.find('#editContact').val(user.contactNumber || '');
+    $formEl.find('#editAddress').val(user.address || '');
 
-    if (alertEl) {
-      alertEl.classList.add('d-none');
-      alertEl.textContent = '';
+    if ($alertEl.length) {
+      $alertEl.addClass('d-none').text('');
     }
 
     modal.show();
   };
 
-  const submitEdit = async (event) => {
+  const submitEdit = (event) => {
     event.preventDefault();
-    if (!formEl || !updateUrl) {
+    if (!$formEl.length || !updateUrl) {
       return;
     }
 
-    const tokenInput = formEl.querySelector('input[name="__RequestVerificationToken"]');
-    const token = tokenInput ? tokenInput.value : '';
+    const token = $formEl.find('input[name="__RequestVerificationToken"]').val() || '';
 
     const payload = {
-      id: Number.parseInt(formEl.querySelector('#editUserId').value, 10),
-      name: formEl.querySelector('#editName').value.trim(),
-      fatherName: formEl.querySelector('#editFatherName').value.trim(),
-      dateOfBirth: formEl.querySelector('#editDob').value,
-      contactNumber: formEl.querySelector('#editContact').value.trim(),
-      address: formEl.querySelector('#editAddress').value.trim()
+      id: Number.parseInt($formEl.find('#editUserId').val(), 10),
+      name: $formEl.find('#editName').val().trim(),
+      fatherName: $formEl.find('#editFatherName').val().trim(),
+      dateOfBirth: $formEl.find('#editDob').val(),
+      contactNumber: $formEl.find('#editContact').val().trim(),
+      address: $formEl.find('#editAddress').val().trim()
     };
 
-    if (alertEl) {
-      alertEl.classList.add('d-none');
-      alertEl.textContent = '';
+    if ($alertEl.length) {
+      $alertEl.addClass('d-none').text('');
     }
 
-    try {
-      const response = await fetch(updateUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          RequestVerificationToken: token
-        },
-        body: JSON.stringify(payload)
+    $.ajax({
+      url: updateUrl,
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(payload),
+      headers: {
+        RequestVerificationToken: token
+      }
+    })
+      .done(() => {
+        modal.hide();
+        loadUsers(currentPage);
+      })
+      .fail((xhr) => {
+        const message = xhr.responseJSON?.message || 'Unable to update user.';
+        if ($alertEl.length) {
+          $alertEl.text(message).removeClass('d-none');
+        }
       });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Unable to update user.');
-      }
-
-      modal.hide();
-      await loadUsers(currentPage);
-    } catch (error) {
-      if (alertEl) {
-        alertEl.textContent = error.message || 'Unable to update user.';
-        alertEl.classList.remove('d-none');
-      }
-    }
   };
 
-  if (pagerEl) {
-    pagerEl.addEventListener('click', (event) => {
-      const target = event.target.closest('button[data-page]');
-      if (!target) {
-        return;
-      }
-      const page = Number.parseInt(target.dataset.page, 10);
+  if ($pagerEl.length) {
+    $pagerEl.on('click', 'button[data-page]', (event) => {
+      const page = Number.parseInt($(event.currentTarget).data('page'), 10);
       if (!Number.isNaN(page)) {
         loadUsers(page);
       }
     });
   }
 
-  if (gridEl) {
-    gridEl.addEventListener('click', (event) => {
-      const button = event.target.closest('.edit-user-btn');
-      if (!button) {
-        return;
-      }
-      const userId = Number.parseInt(button.dataset.userId, 10);
+  if ($gridEl.length) {
+    $gridEl.on('click', '.edit-user-btn', (event) => {
+      const userId = Number.parseInt($(event.currentTarget).data('user-id'), 10);
       if (!Number.isNaN(userId)) {
         openEditModal(userId);
       }
     });
   }
 
-  if (formEl) {
-    formEl.addEventListener('submit', submitEdit);
+  if ($formEl.length) {
+    $formEl.on('submit', submitEdit);
   }
 
   updatePageSize();
   loadUsers(currentPage);
 
   let resizeTimer;
-  window.addEventListener('resize', () => {
+  $(window).on('resize', () => {
     window.clearTimeout(resizeTimer);
     resizeTimer = window.setTimeout(() => {
       const previousSize = currentPageSize;
@@ -257,4 +241,4 @@
       }
     }, 150);
   });
-})();
+});

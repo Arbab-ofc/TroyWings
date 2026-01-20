@@ -1,29 +1,23 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const forms = document.querySelectorAll('.needs-validation');
-  const summary = document.getElementById('validationSummary');
+$(function () {
+  const $forms = $('.needs-validation');
+  const $summary = $('#validationSummary');
 
-  forms.forEach(form => {
-    form.addEventListener(
-      'submit',
-      event => {
-        if (!form.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
-          summary?.classList.remove('d-none');
-        } else {
-          summary?.classList.add('d-none');
-        }
+  $forms.on('submit', function (event) {
+    if (!this.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+      $summary.removeClass('d-none');
+    } else {
+      $summary.addClass('d-none');
+    }
 
-        form.classList.add('was-validated');
-      },
-      false
-    );
+    $(this).addClass('was-validated');
   });
 
-  const successAlert = document.querySelector('.alert.alert-success');
-  if (successAlert) {
+  const $successAlert = $('.alert.alert-success');
+  if ($successAlert.length) {
     setTimeout(() => {
-      successAlert.classList.add('d-none');
+      $successAlert.addClass('d-none');
     }, 3000);
   }
 });
