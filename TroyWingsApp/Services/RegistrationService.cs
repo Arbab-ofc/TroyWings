@@ -7,6 +7,7 @@ public interface IRegistrationService
 {
     void Register(Registration registration);
     PagedResult<Registration> GetRegistrations(int page, int pageSize);
+    IReadOnlyList<Registration> GetAllRegistrations();
     bool UpdateRegistration(Registration registration);
 }
 
@@ -44,6 +45,11 @@ public class RegistrationService : IRegistrationService
     public PagedResult<Registration> GetRegistrations(int page, int pageSize)
     {
         return _repository.GetPage(page, pageSize);
+    }
+
+    public IReadOnlyList<Registration> GetAllRegistrations()
+    {
+        return _repository.GetAll();
     }
 
     public bool UpdateRegistration(Registration registration)

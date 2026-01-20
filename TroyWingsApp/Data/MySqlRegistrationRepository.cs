@@ -9,6 +9,7 @@ public interface IRegistrationRepository
     void EnsureDatabaseSetup();
     void Save(Registration registration);
     PagedResult<Registration> GetPage(int page, int pageSize);
+    IReadOnlyList<Registration> GetAll();
     bool Update(Registration registration);
 }
 
@@ -118,6 +119,38 @@ public class MySqlRegistrationRepository : IRegistrationRepository
             PageSize = safePageSize,
             TotalCount = totalCount
         };
+    }
+
+    public IReadOnlyList<Registration> GetAll()
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        connection.Open();
+
+        using var command = new MySqlCommand("""
+            SELECT Id, Name, FatherName, DateOfBirth, ContactNumber, Address, CreatedAtUtc
+            FROM Registrations
+            ORDER BY CreatedAtUtc DESC;
+            """, connection);
+
+        using var reader = command.ExecuteReader();
+        var items = new List<Registration>();
+        while (reader.Read())
+        {
+            items.Add(new Registration
+            {
+                Id = reader.GetInt32("Id"),
+                Name = reader.GetString("Name"),
+                FatherName = reader.GetString("FatherName"),
+                DateOfBirth = reader.IsDBNull("DateOfBirth")
+                    ? null
+                    : DateOnly.FromDateTime(reader.GetDateTime("DateOfBirth")),
+                ContactNumber = reader.GetString("ContactNumber"),
+                Address = reader.GetString("Address"),
+                CreatedAtUtc = reader.GetDateTime("CreatedAtUtc")
+            });
+        }
+
+        return items;
     }
 
     public bool Update(Registration registration)

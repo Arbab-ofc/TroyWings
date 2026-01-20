@@ -15,7 +15,8 @@ public class UsersController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        var users = _registrationService.GetAllRegistrations();
+        return View(users);
     }
 
     [HttpGet]
