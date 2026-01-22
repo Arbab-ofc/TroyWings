@@ -13,24 +13,55 @@ $(function () {
   const modal = $modalEl.length ? new bootstrap.Modal($modalEl[0]) : null;
   let $activeRow = null;
 
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const showAlert = (message) => {
+    if (!$alertEl.length) {
+      return;
+    }
+    if (message) {
+      $alertEl.text(message).removeClass('d-none');
+      return;
+    }
+    $alertEl.addClass('d-none').text('');
+  };
+
+  const getInputValue = (selector) => $formEl.find(selector).val();
+  const getTrimmedValue = (selector) => String(getInputValue(selector) || '').trim();
+
   const formatDateLabel = (value) => {
     if (!value) {
       return '-';
     }
 
     const parts = String(value).split('-');
-    if (parts.length !== 3) {
-      return value;
-    }
-
     const monthIndex = Number(parts[1]) - 1;
-    const day = parts[2];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    if (Number.isNaN(monthIndex) || monthIndex < 0 || monthIndex > 11) {
+    if (parts.length !== 3 || Number.isNaN(monthIndex) || monthIndex < 0 || monthIndex > 11) {
       return value;
     }
 
-    return `${months[monthIndex]} ${day}, ${parts[0]}`;
+    return `${months[monthIndex]} ${parts[2]}, ${parts[0]}`;
+  };
+
+  const fillFormFromRow = ($row) => {
+    $formEl.find('#editUserId').val($row.data('userId'));
+    $formEl.find('#editName').val($row.data('name') || '');
+    $formEl.find('#editFatherName').val($row.data('fatherName') || '');
+    $formEl.find('#editDob').val($row.data('dob') || '');
+    $formEl.find('#editContact').val($row.data('contactNumber') || '');
+    $formEl.find('#editAddress').val($row.data('address') || '');
+  };
+
+  const updateRowFromPayload = ($row, payload) => {
+    $row.data('name', payload.name);
+    $row.data('fatherName', payload.fatherName);
+    $row.data('dob', payload.dateOfBirth);
+    $row.data('contactNumber', payload.contactNumber);
+    $row.data('address', payload.address);
+    $row.find('[data-field="name"]').text(payload.name);
+    $row.find('[data-field="fatherName"]').text(payload.fatherName);
+    $row.find('[data-field="dateOfBirth"]').text(formatDateLabel(payload.dateOfBirth));
+    $row.find('[data-field="contactNumber"]').text(payload.contactNumber);
+    $row.find('[data-field="address"]').text(payload.address);
   };
 
   const openEditModal = ($row) => {
@@ -39,41 +70,28 @@ $(function () {
     }
 
     $activeRow = $row;
-
-    $formEl.find('#editUserId').val($row.data('userId'));
-    $formEl.find('#editName').val($row.data('name') || '');
-    $formEl.find('#editFatherName').val($row.data('fatherName') || '');
-    $formEl.find('#editDob').val($row.data('dob') || '');
-    $formEl.find('#editContact').val($row.data('contactNumber') || '');
-    $formEl.find('#editAddress').val($row.data('address') || '');
-
-    if ($alertEl.length) {
-      $alertEl.addClass('d-none').text('');
-    }
-
+    fillFormFromRow($row);
+    showAlert('');
     modal.show();
   };
 
   const submitEdit = (event) => {
     event.preventDefault();
-    if (!$formEl.length || !updateUrl) {
+    if (!$formEl.length || !updateUrl || !modal) {
       return;
     }
 
-    const token = $formEl.find('input[name="__RequestVerificationToken"]').val() || '';
-
+    const token = getInputValue('input[name="__RequestVerificationToken"]') || '';
     const payload = {
-      id: Number.parseInt($formEl.find('#editUserId').val(), 10),
-      name: $formEl.find('#editName').val().trim(),
-      fatherName: $formEl.find('#editFatherName').val().trim(),
-      dateOfBirth: $formEl.find('#editDob').val(),
-      contactNumber: $formEl.find('#editContact').val().trim(),
-      address: $formEl.find('#editAddress').val().trim()
+      id: Number.parseInt(getInputValue('#editUserId'), 10),
+      name: getTrimmedValue('#editName'),
+      fatherName: getTrimmedValue('#editFatherName'),
+      dateOfBirth: getInputValue('#editDob'),
+      contactNumber: getTrimmedValue('#editContact'),
+      address: getTrimmedValue('#editAddress')
     };
 
-    if ($alertEl.length) {
-      $alertEl.addClass('d-none').text('');
-    }
+    showAlert('');
 
     $.ajax({
       url: updateUrl,
@@ -87,23 +105,12 @@ $(function () {
       .done(() => {
         modal.hide();
         if ($activeRow) {
-          $activeRow.data('name', payload.name);
-          $activeRow.data('fatherName', payload.fatherName);
-          $activeRow.data('dob', payload.dateOfBirth);
-          $activeRow.data('contactNumber', payload.contactNumber);
-          $activeRow.data('address', payload.address);
-          $activeRow.find('[data-field="name"]').text(payload.name);
-          $activeRow.find('[data-field="fatherName"]').text(payload.fatherName);
-          $activeRow.find('[data-field="dateOfBirth"]').text(formatDateLabel(payload.dateOfBirth));
-          $activeRow.find('[data-field="contactNumber"]').text(payload.contactNumber);
-          $activeRow.find('[data-field="address"]').text(payload.address);
+          updateRowFromPayload($activeRow, payload);
         }
       })
       .fail((xhr) => {
         const message = xhr.responseJSON?.message || 'Unable to update user.';
-        if ($alertEl.length) {
-          $alertEl.text(message).removeClass('d-none');
-        }
+        showAlert(message);
       });
   };
 
