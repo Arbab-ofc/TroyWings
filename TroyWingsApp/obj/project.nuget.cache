@@ -1,11 +1,27 @@
 {
   "version": 2,
-  "dgSpecHash": "HI8j3RDktkb6+i5962x9WJIE7A2135dIWO5lfelKJ4TxbD37ab2/AT3zwz8M1XhNP/mUxlXgUADYlk48eXnhgg==",
+  "dgSpecHash": "qBX5B+nOP1vwZm56hFhbYbwqmOtb2B6jI1o5yz3N/JTVTCt47IxgSMv0dgDalOkAjw4nKHt17z+su5KqSqNjCA==",
   "success": true,
   "projectFilePath": "/Users/arbabarshad/Desktop/TroyWings/TroyWingsApp/TroyWingsApp.csproj",
   "expectedPackageFiles": [
-    "/Users/arbabarshad/.nuget/packages/microsoft.extensions.logging.abstractions/7.0.1/microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
-    "/Users/arbabarshad/.nuget/packages/mysqlconnector/2.3.6/mysqlconnector.2.3.6.nupkg.sha512"
+    "/Users/arbabarshad/.nuget/packages/awssdk.core/3.7.100.14/awssdk.core.3.7.100.14.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/awssdk.securitytoken/3.7.100.14/awssdk.securitytoken.3.7.100.14.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/dnsclient/1.6.1/dnsclient.1.6.1.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/microsoft.extensions.logging.abstractions/2.0.0/microsoft.extensions.logging.abstractions.2.0.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/microsoft.netcore.platforms/5.0.0/microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/microsoft.win32.registry/5.0.0/microsoft.win32.registry.5.0.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/mongodb.bson/2.27.0/mongodb.bson.2.27.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/mongodb.driver/2.27.0/mongodb.driver.2.27.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/mongodb.driver.core/2.27.0/mongodb.driver.core.2.27.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/mongodb.libmongocrypt/1.10.0/mongodb.libmongocrypt.1.10.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/sharpcompress/0.30.1/sharpcompress.0.30.1.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/snappier/1.0.0/snappier.1.0.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/system.buffers/4.5.1/system.buffers.4.5.1.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/system.runtime.compilerservices.unsafe/5.0.0/system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/system.security.accesscontrol/5.0.0/system.security.accesscontrol.5.0.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/system.security.principal.windows/5.0.0/system.security.principal.windows.5.0.0.nupkg.sha512",
+    "/Users/arbabarshad/.nuget/packages/zstdsharp.port/0.7.3/zstdsharp.port.0.7.3.nupkg.sha512"
   ],
   "logs": []
 }

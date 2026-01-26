@@ -20,21 +20,12 @@ public class UsersController : Controller
     }
 
     [HttpGet]
-    public IActionResult List(int page = 1, int pageSize = 4)
+    public IActionResult List()
     {
         try
         {
-            var normalizedSize = pageSize == 2 ? 2 : 4;
-            var result = _registrationService.GetRegistrations(page, normalizedSize);
-
-            return Json(new
-            {
-                items = result.Items,
-                page = result.Page,
-                pageSize = result.PageSize,
-                totalCount = result.TotalCount,
-                totalPages = result.TotalPages
-            });
+            var users = _registrationService.GetAllRegistrations();
+            return Json(new { items = users });
         }
         catch (Exception ex)
         {

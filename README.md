@@ -1,6 +1,6 @@
 # TroyWingsApp — Registration + Users Directory
 
-Premium registration UI and a luxury Users directory for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Icons, and Google Fonts. The app includes SEO/OG/JSON-LD placeholders, glassmorphism styling, responsive layout, AJAX-powered pagination/editing, and MySQL persistence via `MySqlConnector`.
+Premium registration UI and a luxury Users directory for .NET 8 MVC (Razor) with Bootstrap 5.3, Bootstrap Icons, and Google Fonts. The app includes SEO/OG/JSON-LD placeholders, glassmorphism styling, responsive layout, AJAX-powered pagination/editing, and MongoDB persistence via `MongoDB.Driver`.
 
 ## 🔧 Tech Stack & Tools
 
@@ -11,13 +11,13 @@ Premium registration UI and a luxury Users directory for .NET 8 MVC (Razor) with
 ![Google Fonts](https://img.shields.io/badge/Google%20Fonts-4285F4?logo=googlefonts&logoColor=white&style=for-the-badge)
 ![jQuery](https://img.shields.io/badge/jQuery-0769AD?logo=jquery&logoColor=white&style=for-the-badge)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white&style=for-the-badge)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&style=for-the-badge)
-![MySqlConnector](https://img.shields.io/badge/MySqlConnector-0D9D58?logo=mysql&logoColor=white&style=for-the-badge)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white&style=for-the-badge)
+![MongoDB.Driver](https://img.shields.io/badge/MongoDB.Driver-47A248?logo=mongodb&logoColor=white&style=for-the-badge)
 
 - Bootstrap 5.3.3 + Bootstrap Icons via CDN.
 - Google Fonts (Playfair Display, Inter).
 - Custom CSS/JS under `wwwroot` (gradients, glass cards, animations, validation behavior, success alert timeout, jQuery-powered users UI).
-- MySQL persistence implemented with lightweight `MySqlConnector` repository (no EF Core runtime dependency).
+- MongoDB persistence implemented with `MongoDB.Driver` (no EF Core runtime dependency).
 
 ## 📂 Project Layout
 
@@ -34,7 +34,7 @@ Premium registration UI and a luxury Users directory for .NET 8 MVC (Razor) with
 - `TroyWingsApp/Models/Registration.cs` — Form model with validation attributes.
 - `TroyWingsApp/Models/UpdateRegistrationRequest.cs` — DTO for edit modal updates.
 - `TroyWingsApp/Models/PagedResult.cs` — Pagination envelope.
-- `TroyWingsApp/Data/MySqlRegistrationRepository.cs` — Repository using `MySqlConnector` to insert, list, and update registrations.
+- `TroyWingsApp/Data/MongoRegistrationRepository.cs` — Repository using `MongoDB.Driver` to insert, list, and update registrations.
 - `TroyWingsApp/Controllers/HomeController.cs` — Receives form posts, validates, and stores via repository.
 - `TroyWingsApp/Controllers/UsersController.cs` — Users list JSON endpoint and update endpoint.
 - `TroyWingsApp/Program.cs` — Service registration for repository, DB/table bootstrap on startup, routing, middleware.
@@ -71,29 +71,18 @@ From `TroyWingsApp/`:
 - Open the printed URL (e.g., `http://localhost:5230/`).
 - macOS HTTPS trust (optional): `dotnet dev-certs https --trust`, then rerun and use HTTPS URL.
 
-### Database setup (MySQL)
+### Database setup (MongoDB)
 
-1) Ensure MySQL is running and reachable at `127.0.0.1:3306`.
-2) Connection string lives in `appsettings*.json` (example):
+1) Ensure MongoDB is running and reachable at `mongodb://localhost:27017/`.
+2) Connection settings live in `appsettings*.json` (example):
    ```json
-   "ConnectionStrings": {
-     "Default": "Server=127.0.0.1;Port=3306;Database=troywings_db;User=root;Password=Arbab@321123;"
+   "Mongo": {
+     "ConnectionString": "mongodb://localhost:27017/",
+     "Database": "Troywings"
    }
    ```
-3) Ensure the `Registrations` table exists in `troywings_db`.
-4) Table definition:
-   ```sql
-   CREATE TABLE IF NOT EXISTS Registrations (
-       Id INT AUTO_INCREMENT PRIMARY KEY,
-       Name VARCHAR(80) NOT NULL,
-       FatherName VARCHAR(80) NOT NULL,
-       DateOfBirth DATE NOT NULL,
-       ContactNumber VARCHAR(14) NOT NULL,
-       Address VARCHAR(180) NOT NULL,
-       CreatedAtUtc DATETIME NOT NULL
-   );
-   ```
-5) The repository uses parameterized queries to avoid injection and logs when unexpected row counts occur.
+3) Collections are created automatically on first use (`Registrations` and `Counters`).
+4) The repository uses an auto-increment counter document so the app can keep numeric `Id` values.
 
 ## 🧪 Commands Cheat Sheet
 
@@ -110,7 +99,7 @@ From `TroyWingsApp/`:
 - Palette: adjust CSS variables in `wwwroot/css/registration.css` (`--accent`, `--bg-*`, etc.).
 - Branding: update copy/icons and links in the shared partials or main view.
 - SEO: swap canonical, OG tags, and JSON-LD placeholders with production values.
-- Persistence: repository uses `MySqlConnector`; update connection string for your environment and extend SQL if you add fields.
+- Persistence: repository uses `MongoDB.Driver`; update the Mongo connection settings for your environment and extend the document mapping if you add fields.
 - Secrets: move DB credentials into user secrets or environment variables for non-dev usage.
 
 ## 👥 Users Directory
@@ -132,5 +121,5 @@ From `TroyWingsApp/`:
 - CSS/JS not updating: hard refresh (`Cmd/Ctrl+Shift+R`).
 - Dev cert warning: run `dotnet dev-certs https --trust` once.
 - NuGet restore blocked: ensure network access or pre-restore packages.
-- MySQL connection failures: verify host/port/user/password in `appsettings*.json`; ensure the account can create databases/tables if relying on auto-create.
+- MongoDB connection failures: verify the connection string and database name in `appsettings*.json`; confirm the MongoDB service is running.
 - 502/404 while running: check console output for the actual listening URL and verify SSL dev cert trust if using HTTPS.

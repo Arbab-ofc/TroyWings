@@ -3,7 +3,7 @@ using TroyWingsApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IRegistrationRepository, MySqlRegistrationRepository>();
+builder.Services.AddScoped<IRegistrationRepository, MongoRegistrationRepository>();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddControllersWithViews();
 

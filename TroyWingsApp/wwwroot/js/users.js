@@ -4,7 +4,7 @@ $(function () {
     return;
   }
 
-  const updateUrl = $pageEl.data('update-url');
+  const updateUrl = '/Users/Update';
   const $tableEl = $('#usersTable');
   const $modalEl = $('#editUserModal');
   const $formEl = $('#editUserForm');

@@ -38,9 +38,9 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "MySqlConnector": {
+            "MongoDB.Driver": {
               "target": "Package",
-              "version": "[2.3.6, )"
+              "version": "[2.27.0, )"
             }
           },
           "imports": [
